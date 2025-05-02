@@ -1,0 +1,84 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/devKaos117/Utils.py/blob/main/documentation/schema/http.schema.json",
+    "title": "HTTPy config",
+    "description": "Configuration dictionary to the HTTPy client",
+    "type": "object",
+    "properties": {
+        "max_retries": {
+            "description": "Maximum number of retry attempts for failed requests",
+            "type": "integer",
+            "minimum": 0,
+            "default": 3
+        },
+        "retry_status_codes": {
+            "description": "HTTP status codes that should trigger a retry",
+            "type": "array",
+            "items": {
+                "type": "integer"
+            },
+            "default": [403, 429, 500, 502, 503, 504]
+        },
+        "success_status_codes": {
+            "description": "HTTP status codes that should be accepted as a success",
+            "type": "array",
+            "items": {
+                "type": "integer"
+            },
+            "default": [200, 201, 202, 203, 204, 205, 206, 207, 208]
+        },
+        "timeout": {
+            "description": "Request timeout in seconds",
+            "type": "integer",
+            "minimum": 0,
+            "default": 10
+        },
+        "headers":{
+            "description": "Default headers for all requests",
+            "type": "object",
+            "properties": {
+                "Accept": {
+                    "description": "",
+                    "type": "string"
+                },
+                "Accept-Encoding": {
+                    "description": "",
+                    "type": "string"
+                },
+                "Accept-Language": {
+                    "description": "",
+                    "type": "string"
+                },
+                "Access-Control-Request-Headers": {
+                    "description": "",
+                    "type": "string"
+                },
+                "Access-Control-Request-Method": {
+                    "description": "",
+                    "type": "string"
+                },
+                "Authorization": {
+                    "description": "",
+                    "type": "string"
+                },
+                "Cache-Control": {
+                    "description": "",
+                    "type": "string"
+                },
+                "Connection": {
+                    "description": "",
+                    "type": "string"
+                },
+                "DNT": {
+                    "description": "",
+                    "type": "string"
+                },
+                "User-Agent": {
+                    "description": "",
+                    "type": "string"
+                }
+            },
+            "default": {}
+        }
+    }
+}
