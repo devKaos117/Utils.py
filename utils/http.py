@@ -48,7 +48,6 @@ class HTTPy:
         "timeout": 10,
         "headers": {
             "Accept": "text/html,application/xhtml+xml,application/xml,application/json",
-            "Accept-Encoding": "gzip,deflate,br,zstd",
             "Accept-Language": "en-US,en,pt-BR,pt",
             "Cache-Control": "no-cache"
         }
