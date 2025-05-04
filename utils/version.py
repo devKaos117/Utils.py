@@ -1,9 +1,11 @@
 import re
 from packaging import version
+from typing import List, Tuple
 
 class VersionCheck:
 
     _PATTERN =  r"(\d+(?:(?:\.\d+){0,2})(?:(?:\.\*)|(?:\.\d+))?)((?:[a-zA-Z]{1}|\*)|(?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+|\*)))?" # Match any version string in groups (major.minor.patch.build)(suffix), with or without wildcards
+    _PATTERN_SPECIFIC = r"(\d+(?:\.\d+){0,3})((?:[a-zA-Z]{1})|(?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+)))?" # Match any version string in groups (major.minor.patch.build)(suffix) without wildcards
     _SUPPORTED_COMPARISONS = ["<", "<=", "==", ">=", ">"]
 
     @staticmethod
@@ -19,9 +21,22 @@ class VersionCheck:
         
         """
         return True if re.match(f"^{VersionCheck._PATTERN}$", v) else False
+    
+    @staticmethod
+    def extract(str: str) -> List[str]:
+        """
+        Extract version strings
+
+        Args:
+            str: Source string
+        
+        Returns:
+            List of found version strings
+        """
+        return re.findall(VersionCheck._PATTERN_SPECIFIC, str)
 
     @staticmethod
-    def _execute_comparison(a, op, b):
+    def _execute_comparison(a, op, b) -> bool:
         """
         Execute the comparison directly through a serie of ifs
 
@@ -76,7 +91,7 @@ class VersionCheck:
         return f"{v1}{s1}", f"{v2}{s2}"
     
     @staticmethod
-    def _split_suffix(v: str) -> tuple:
+    def _split_suffix(v: str) -> Tuple[str]:
         """
         Split the version into semantic version and suffix
 
