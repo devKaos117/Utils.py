@@ -61,10 +61,17 @@ class HTTPy:
             config: Configuration dictionary following https://github.com/devKaos117/Utils.py/blob/main/documentation/schema/http.schema.json
             logger: kronos.Logger instance to use
         """
-        self._logger = logger
+        if logger:
+            self._logger = logger
+        else:
+            self._logger = kronos.Logger("none")
+
         self._config = configuration.import_config(config, self._DEFAULT_CONFIG)
         self._rate_limiter = rate_limiter
         self._session = self._create_session()
+
+        self._logger.info("HTTPy client initialized")
+        self._logger.debug("HTTPy client settings", self._config)
 
     def _create_session(self) -> requests.Session:
         """
@@ -77,7 +84,7 @@ class HTTPy:
 
         # Set default headers
         session.headers = self._config['headers']
-        self._logger.info("Session initialized")
+        self._logger.debug("Session initialized")
 
         return session
 
