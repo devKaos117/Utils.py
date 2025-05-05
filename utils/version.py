@@ -4,10 +4,35 @@ from typing import List, Tuple
 
 class VersionCheck:
 
-    _PATTERN =  r"(\d+(?:(?:\.\d+){0,2})(?:(?:\.\*)|(?:\.\d+))?)((?:[a-zA-Z]{1}|\*)|(?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+|\*)))?" # Match any version string in groups (major.minor.patch.build)(suffix), with or without wildcards
+    # Pattern for matching version strings with possible wildcards
+    # Format: major.minor.patch.build + optional suffix
+    _PATTERN =  r"(\d+(?:(?:\.\d+){0,2})(?:(?:\.\*)|(?:\.\d+))?)((?:[a-zA-Z]{1}|\*)|(?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+|\*)))?"
+    # Components:
+    # 1. (\d+(?:(?:\.\d+){0,2})(?:(?:\.\*)|(?:\.\d+))?) - Version numbers group:
+    #   - \d+ : Starts with one or more digits (major version)
+    #   - (?:(?:\.\d+){0,2}) : Followed by 0-2 occurrences of dot + digits (minor.patch)
+    #   - (?:(?:\.\*)|(?:\.\d+))? : Optional final component that can be .* or .digits (build)
+    # 
+    # 2. ((?:[a-zA-Z]{1}|\*)|(?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+|\*)))? - Optional suffix group:
+    #   - (?:[a-zA-Z]{1}|\*) : Single letter suffix or wildcard
+    #   - OR
+    #   - (?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+|\*)) : Delimiter followed by alphanumeric suffix or wildcard
+    
+    # Pattern for matching specific version strings without wildcards
+    # Format: major.minor.patch.build + optional suffix
     _PATTERN_SPECIFIC = r"(\d+(?:\.\d+){0,3})((?:[a-zA-Z]{1})|(?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+)))?" # Match any version string in groups (major.minor.patch.build)(suffix) without wildcards
-    _SUPPORTED_COMPARISONS = ["<", "<=", "==", ">=", ">"]
+    # Components:
+    # 1. (\d+(?:\.\d+){0,3}) - Version numbers group:
+    #   - \d+ : Starts with one or more digits (major version)
+    #   - (?:\.\d+){0,3} : Followed by 0-3 occurrences of dot + digits (minor.patch.build)
+    # 
+    # 2. ((?:[a-zA-Z]{1})|(?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+)))? - Optional suffix group:
+    #   - (?:[a-zA-Z]{1}) : Single letter suffix
+    #   - OR
+    #   - (?:(?:-|_|\+)(?:[a-zA-Z0-9_\-\+]+)) : Delimiter followed by alphanumeric suffix
 
+    _SUPPORTED_COMPARISONS = ["<", "<=", "==", ">=", ">"]
+    
     @staticmethod
     def is_valid(v: str) -> bool:
         """
