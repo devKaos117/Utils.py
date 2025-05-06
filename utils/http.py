@@ -159,7 +159,8 @@ class HTTPy:
         """
         if response.status_code < 200 or response.status_code > 299:
             self._logger.log_http_response(response)
-        elif 400 <= response.status_code < 500:
+        
+        if 400 <= response.status_code < 500:
             if response.status_code == 401:
                 self._logger.error(f"Authentication error: {response.status_code} - {response.text}")
             elif response.status_code == 403:
