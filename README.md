@@ -45,6 +45,7 @@ class LoremIpsum:
 
 #### http.py
 A http client for requests
+Improvements: Async, proxy and proxy rotation, cookies and session maintainability, rate limiting per domain or client per domain?
 ```python
 import kronos
 from .utils.http import HTTPy
